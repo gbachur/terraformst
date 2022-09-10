@@ -19,27 +19,39 @@ resource "aws_instance" "dev" {
     Name ="dev${count.index}"
    }
    #Security Group - Grupo VPC
-   vpc_security_group_ids = ["sg-093e26b2601f05e8c"]
+   vpc_security_group_ids = ["${aws_security_group.acesso_ssh.id}"]
 }
 
-#Criação do Security Group Utilizado pelas EC2
-resource "aws_security_group" "acesso_ssh" {
-  name = "acesso-ssh-2"
-  description = "Permitir acesso SSH nas instancias EC2 - Security Group"
-
-  ingress {
-    
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = ["179.125.55.100/32"]
-
-    
-  } 
-
-  tags ={
-    Name = "Allow-SSH"
+resource "aws_instance" "dev4" {
+  ami = "ami-052efd3df9dad4825"
+  instance_type = "t2.micro"
+  key_name = "terraformaws1"
+  tags = {
+    Name = "dev4"
   }
+  vpc_security_group_ids = ["${aws_security_group.acesso_ssh.id}"]
+  depends_on = [aws_s3_bucket.dev4]
+}
 
+resource "aws_instance" "dev5" {
+  ami = "ami-052efd3df9dad4825"
+  instance_type = "t2.micro"
+  key_name = "terraformaws1"
+  tags = {
+    Name = "dev5"
+  }
+  vpc_security_group_ids = ["${aws_security_group.acesso_ssh.id}"]
+  
+}
+
+
+resource "aws_s3_bucket" "dev4" {
+  bucket = "buckets3tform"
+  acl = "private"
+
+  tags = {
+    "name" = "bucket-lab"
+  }
+  
 }
 
