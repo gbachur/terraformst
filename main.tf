@@ -72,7 +72,7 @@ resource "aws_s3_bucket" "dev4" {
   tags = {
     "name" = "bucket-lab"
   }
-  
+
 }
 
 resource "aws_dynamodb_table" "dynamodb_homolog" {
